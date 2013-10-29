@@ -6,16 +6,15 @@ This library allows you to quickly and easily send emails through SendGrid using
 
 
 ```objective-c
-    gridmail *msg = [gridmail user:@"username" andPass:@"password"];   
-   
-    msg.to = @"foo@bar.com";
-    msg.subject = @"subject goes here";
-    msg.from = @"me@bar.com";
-    msg.text = @"hello world";   
-	msg.html = @"<h1>hello world!</h1>";
+gridmail *msg = [gridmail user:@"username" andPass:@"password"];   
+
+msg.to = @"foo@bar.com";
+msg.subject = @"subject goes here";
+msg.from = @"me@bar.com";
+msg.text = @"hello world";   
+msg.html = @"<h1>hello world!</h1>";
     
-    [msg sendWithWeb];
-    
+[msg sendWithWeb];    
 ```
 
 ## Installation
@@ -30,16 +29,16 @@ This library allows you to quickly and easily send emails through SendGrid using
 
 To begin using this library, create a new email object with your SendGrid credentials.
 ```objective-c
-    gridmail *msg = [gridmail user:@"username" andPass:@"password"];
+gridmail *msg = [gridmail user:@"username" andPass:@"password"];
 ```
 
 Customize the parameters of your email message.
 ```objective-c
-    msg.tolist = @[@"foo1@bar.com", @"foo2@bar.com"];
-    msg.subject = @"subject goes here";
-    msg.from = @"me@bar.com";
-    msg.text = @"hello world";   
-	msg.html = @"<h1>hello world!</h1>";
+msg.tolist = @[@"foo1@bar.com", @"foo2@bar.com"];
+msg.subject = @"subject goes here";
+msg.from = @"me@bar.com";
+msg.text = @"hello world";   
+msg.html = @"<h1>hello world!</h1>";
 ```
 For the full list of available parameters, check out the [Docs](http://sendgrid.com/docs/API_Reference/Web_API/mail.html)
 
@@ -48,7 +47,7 @@ For the full list of available parameters, check out the [Docs](http://sendgrid.
 You can add a single address using the to property of the mail object
 
 ```objective-c
-    msg.to = @"foo@bar.com";
+msg.to = @"foo@bar.com";
 ```
 
 Or
@@ -56,7 +55,7 @@ Or
 You can add multiple To addresses by setting the toList property
 
 ```objective-c
-    msg.tolist = @[@"foo1@bar.com", @"foo2@bar.com"];
+msg.tolist = @[@"foo1@bar.com", @"foo2@bar.com"];
 ```
 **Note** One or the other must be set.
 
@@ -64,7 +63,7 @@ You can add multiple To addresses by setting the toList property
 You can add an image attachment to your email message. The method accepts a UIImage. 
 
 ```objective-c
-    [msg attachImage:self.photo];
+[msg attachImage:self.photo];
 ```
 
 ### Adding custom headers
@@ -73,16 +72,16 @@ You can set custom headers in your email by using the addCustomHeader:withKey me
 
 **Adding Categories**
 ```objective-c
-    NSString *cat = @"billing_notifications";
-    [msg addCustomHeader:cat withKey:@"category"];
+NSString *cat = @"billing_notifications";
+[msg addCustomHeader:cat withKey:@"category"];
 ```
 
 **Adding Unique Arguments**
 ```objective-c
-    NSDictionary *uarg = @{@"customerAccountNumber":@"55555",
+NSDictionary *uarg = @{@"customerAccountNumber":@"55555",
                            @"activationAttempt": @"1"};
 
-    [msg addCustomHeader:uarg withKey:@"unique_args"];
+[msg addCustomHeader:uarg withKey:@"unique_args"];
 ```
 
 ## Contributing
