@@ -6,7 +6,7 @@ This library allows you to quickly and easily send emails through SendGrid using
 
 
 ```objective-c
-gridmail *msg = [gridmail user:@"username" andPass:@"password"];   
+sendgrid *msg = [sendgrid user:@"username" andPass:@"password"];   
 
 msg.to = @"foo@bar.com";
 msg.subject = @"subject goes here";
@@ -29,7 +29,7 @@ msg.html = @"<h1>hello world!</h1>";
 
 To begin using this library, create a new email object with your SendGrid credentials.
 ```objective-c
-gridmail *msg = [gridmail user:@"username" andPass:@"password"];
+sendgrid *msg = [sendgrid user:@"username" andPass:@"password"];
 ```
 
 Customize the parameters of your email message.
@@ -64,6 +64,12 @@ You can add an image attachment to your email message. The method accepts a UIIm
 
 ```objective-c
 [msg attachImage:self.photo];
+```
+
+**Displaying attached image inline**
+```objective-c
+msg.inlinePhoto = true;
+msg.html = @"<img src =\"cid:image.png\"><h1>hello world</h1>";
 ```
 
 ### Adding custom headers

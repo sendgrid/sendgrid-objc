@@ -1,11 +1,10 @@
 //
-//  gridmail.h
-//
+//  sendgrid.h
 
 
 #import <Foundation/Foundation.h>
 
-@interface gridmail : NSObject
+@interface sendgrid : NSObject
 
 @property (nonatomic, strong) NSString *apiUser;
 @property (nonatomic, strong) NSString *apiKey;
@@ -23,6 +22,7 @@
 @property (nonatomic, strong) NSString *replyto;
 @property (nonatomic, strong) NSString *date;
 @property (nonatomic, strong) NSString *content;
+@property (nonatomic, assign) BOOL inlinePhoto;
 @property (nonatomic, strong) NSMutableDictionary *headers;
 
 
@@ -32,6 +32,5 @@
 - (void)attachImage:(UIImage *)img;
 - (NSString *)headerEncode:(NSDictionary *)header;
 - (void)sendWithWeb;
-
 
 @end

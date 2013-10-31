@@ -1,20 +1,20 @@
 //
-//  gridmail.m
+//  sendgrid.m
 //
 
-
-#import "gridmail.h"
+#import "sendgrid.h"
 #import "AFNetworking.h"
 
 NSString * const sgDomain = @"https://sendgrid.com/";
 NSString * const sgEndpoint = @"api/mail.send.json";
 
-@implementation gridmail
+
+@implementation sendgrid
 
 + (instancetype)user:(NSString *)apiUser andPass:(NSString *)apiKey{
     //public method that creates the mail object and returns that object
     
-    gridmail *message = [[gridmail alloc] initWithUser:apiUser andPass:apiKey];
+    sendgrid *message = [[sendgrid alloc] initWithUser:apiUser andPass:apiKey];
     
     return message;
 }
@@ -27,6 +27,7 @@ NSString * const sgEndpoint = @"api/mail.send.json";
         self.apiUser = apiUser;
         self.apiKey =  apiKey;
         self.headers = [NSMutableDictionary new];
+        [self setInlinePhoto:false];
     }
     return self;
 }
@@ -62,7 +63,7 @@ NSString * const sgEndpoint = @"api/mail.send.json";
 }
 
 - (void)sendWithWeb{
-
+    
     //Uses Web Api to send email
     
     NSString *URL = [NSString stringWithFormat: @"%@%@",sgDomain, sgEndpoint];
@@ -71,25 +72,25 @@ NSString * const sgEndpoint = @"api/mail.send.json";
     
     //Items to add to Header and convert to json
     if(self.tolist !=nil){
-       [self.headers setObject:self.tolist forKey:@"to"];
-       self.to=[self.tolist objectAtIndex:0];
+        [self.headers setObject:self.tolist forKey:@"to"];
+        self.to=[self.tolist objectAtIndex:0];
     }
     
     
     if(self.headers !=nil)
         self.xsmtpapi = [self headerEncode:self.headers];
-  
+    
     
     //Building up Parameter Dictionary
-    NSMutableDictionary *parameters =[NSMutableDictionary dictionaryWithDictionary: @{@"api_user": self.apiUser,
-                                 @"api_key": self.apiKey, //required
-                                 @"subject":self.subject, //required
-                                 @"from":self.from,       //required
-                                 @"html":self.html,       //required
-                                 @"to":self.to,           //required
-                                 @"text":self.text,       //required
-                                 @"x-smtpapi":self.xsmtpapi
-                                 }];
+    NSMutableDictionary *parameters =[NSMutableDictionary dictionaryWithDictionary:@{@"api_user": self.apiUser,
+                                                                                      @"api_key": self.apiKey, //required
+                                                                                      @"subject":self.subject, //required
+                                                                                      @"from":self.from,       //required
+                                                                                      @"html":self.html,       //required
+                                                                                      @"to":self.to,           //required
+                                                                                      @"text":self.text,       //required
+                                                                                      @"x-smtpapi":self.xsmtpapi
+                                                                                      }];
     
     
     //optional parameters
@@ -108,10 +109,10 @@ NSString * const sgEndpoint = @"api/mail.send.json";
     if(self.date != nil)
         [parameters setObject:self.date forKey:@"date"];
     
-    if(self.content != nil)
-        [parameters setObject:self.replyto forKey:@"content"];
+    if(self.inlinePhoto)
+        [parameters setObject:@"image.png" forKey:@"content[image.png]"];
     
-
+    
     //Posting Paramters to server using AFNetworking 2.0
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -124,7 +125,7 @@ NSString * const sgEndpoint = @"api/mail.send.json";
             [formData appendPartWithFileData:imageData name:@"files[image.png]" fileName:@"image.png" mimeType:@"image/png"];
         }
     } success:^(AFHTTPRequestOperation *operation, id responseObject) {
-       // NSLog(@"Success: %@", responseObject);
+        // NSLog(@"Success: %@", responseObject);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
     }];
