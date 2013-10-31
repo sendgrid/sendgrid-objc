@@ -22,8 +22,8 @@ msg.html = @"<h1>hello world!</h1>";
 1. Install via Source
 
     1. Clone the repository.
-    2. Copy Gridmail.m and .h files to your project.
-    3. Import both Gridmail and AFNetworking in your project
+    2. Copy sendgrid.m and .h files to your project.
+    3. Import both sendgrid and AFNetworking in your project
 
 ## Usage
 
