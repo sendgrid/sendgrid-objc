@@ -35,7 +35,6 @@ NSString * const sgEndpoint = @"api/mail.send.json";
 - (void) attachImage:(UIImage *)img {
     //attaches image to be posted
     self.img = img;
-    NSLog(@"added image: %@", self.img.description);
 }
 
 
