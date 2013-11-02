@@ -17,11 +17,27 @@ msg.html = @"<h1>hello world!</h1>";
 [msg sendWithWeb];    
 ```
 
-## Installation
+## Installation via CocoaPods (Recommended Method)
+[CocoaPods](http://cocoapods.org) is a dependency manager for Objective-C, which automates and simplifies the process of using 3rd-party libraries like Sendgrid and its dependencies in your projects. Simply add the lines below to your existing Podfile or make a new 'Podfile' that contain the lines below. 
 
-1. Install via Source
+#### Podfile
 
-    1. Clone the repository.
+```ruby
+platform :ios, '7.0'
+pod 'sendgrid', '~>  0.1.0'
+```
+
+Run the following in the command line
+```
+pod install
+```
+
+Be sure to open up the xcworkspace file now instead of the xcodeproj file. 
+
+## Alternative installation
+Install via Source
+
+    1. Clone this repository.
     2. Copy sendgrid.m and .h files to your project.
     3. Import both sendgrid and AFNetworking in your project
 
