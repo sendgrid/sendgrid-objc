@@ -107,7 +107,7 @@ NSString * const sgEndpoint = @"api/mail.send.json";
     } success:^(AFHTTPRequestOperation *operation, id responseObject) {
         successBlock(responseObject);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        failureBlock(failureBlock);
+        failureBlock(error);
     }];
     
 }
