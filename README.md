@@ -1,4 +1,6 @@
-# Sendgrid-ios
+##The Sendgrid Objective-C SDK is now being maintained on the SendGrid github (https://github.com/sendgrid/sendgrid-objc)
+
+## Sendgrid-ios
 
 This library allows you to quickly and easily send emails through SendGrid using Objective-C.
 
