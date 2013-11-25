@@ -5,7 +5,7 @@
 #import "sendgrid.h"
 #import "AFNetworking.h"
 
-NSString * const sgDomain = @"https://sendgrid.com/";
+NSString * const sgDomain = @"https://api.sendgrid.com/";
 NSString * const sgEndpoint = @"api/mail.send.json";
 
 @interface sendgrid ()

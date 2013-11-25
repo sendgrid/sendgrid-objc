@@ -32,5 +32,6 @@
 - (void)attachImage:(UIImage *)img;
 - (NSString *)headerEncode:(NSDictionary *)header;
 - (void)sendWithWeb;
+- (void)sendWithWebUsingSuccessBlock:(void(^)(id responseObject))successBlock failureBlock:(void(^)(NSError *error))failureBlock;
 
 @end
