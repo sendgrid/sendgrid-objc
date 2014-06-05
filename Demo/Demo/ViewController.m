@@ -53,7 +53,7 @@
     
     //**html message to use when setting inline photos as true**
     //msg.inlinePhoto = true;
-    //msg.html = @"<img src =\"cid:image.png\"><h1>hello world</h1>";
+    //msg.html = @"<img src =\"cid:image0.png\"><h1>hello world</h1><img src =\"cid:image1.png\"><h1>hello world</h1>";
     
     //adding unique arguments
     NSDictionary *uarg = @{@"customerAccountNumber":@"55555",
