@@ -10,7 +10,7 @@
 
 @interface ViewController : UIViewController
 
-@property (nonatomic, strong) UIImage *img;
+@property (nonatomic, strong) NSMutableArray *imgs;
 @property (weak, nonatomic) IBOutlet UIImageView *preview;
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
 
