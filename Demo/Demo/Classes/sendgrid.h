@@ -15,7 +15,7 @@
 @property (nonatomic, strong) NSString *html;
 @property (nonatomic, strong) NSString *xsmtpapi;
 @property (nonatomic, strong) NSString *bcc;
-@property (nonatomic, strong) UIImage *img;
+@property (nonatomic, strong) NSMutableArray *imgs;
 @property (nonatomic, strong) NSArray *tolist;
 @property (nonatomic, strong) NSString *toName;
 @property (nonatomic, strong) NSString *fromName;

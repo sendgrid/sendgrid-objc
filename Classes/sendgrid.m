@@ -39,7 +39,9 @@ NSString * const sgEndpoint = @"api/mail.send.json";
 
 - (void) attachImage:(UIImage *)img {
     //attaches image to be posted
-    self.img = img;
+    if (self.imgs == NULL)
+        self.imgs = [[NSMutableArray alloc] init];
+    [self.imgs addObject:img];
 }
 
 
@@ -77,13 +79,17 @@ NSString * const sgEndpoint = @"api/mail.send.json";
     
     [manager POST:self.baseURL parameters:[self parametersDictionary] constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         //if image attachment exists it will post it
-        if(self.img!=nil)
+        for (int i = 0; i < self.imgs.count; i++)
         {
-            NSData *imageData = UIImagePNGRepresentation(self.img);
-            [formData appendPartWithFileData:imageData name:@"files[image.png]" fileName:@"image.png" mimeType:@"image/png"];
+            UIImage *img = [self.imgs objectAtIndex:i];
+            NSString *filename = [NSString stringWithFormat:@"image%d.png", i];
+            NSString *name = [NSString stringWithFormat:@"files[image%d.png]", i];
+            NSLog(@"name: %@, Filename: %@", name, filename);
+            NSData *imageData = UIImagePNGRepresentation(img);
+            [formData appendPartWithFileData:imageData name:name fileName:filename mimeType:@"image/png"];
         }
     } success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        // NSLog(@"Success: %@", responseObject);
+         NSLog(@"Success: %@", responseObject);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
     }];
@@ -99,10 +105,14 @@ NSString * const sgEndpoint = @"api/mail.send.json";
     
     [manager POST:self.baseURL parameters:[self parametersDictionary] constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         //if image attachment exists it will post it
-        if(self.img!=nil)
+        for (int i = 0; i < self.imgs.count; i++)
         {
-            NSData *imageData = UIImagePNGRepresentation(self.img);
-            [formData appendPartWithFileData:imageData name:@"files[image.png]" fileName:@"image.png" mimeType:@"image/png"];
+            UIImage *img = [self.imgs objectAtIndex:i];
+            NSString *filename = [NSString stringWithFormat:@"image%d.png", i];
+            NSString *name = [NSString stringWithFormat:@"files[image%d.png]", i];
+            NSLog(@"name: %@, Filename: %@", name, filename);
+            NSData *imageData = UIImagePNGRepresentation(img);
+            [formData appendPartWithFileData:imageData name:name fileName:filename mimeType:@"image/png"];
         }
     } success:^(AFHTTPRequestOperation *operation, id responseObject) {
         successBlock(responseObject);
@@ -158,7 +168,17 @@ NSString * const sgEndpoint = @"api/mail.send.json";
         [parameters setObject:self.date forKey:@"date"];
     
     if(self.inlinePhoto)
-        [parameters setObject:@"image.png" forKey:@"content[image.png]"];
+    {
+        for (int i = 0; i < self.imgs.count; i++)
+        {
+
+            NSString *filename = [NSString stringWithFormat:@"image%d.png", i];
+            NSString *key = [NSString stringWithFormat:@"content[image%d.png]", i];
+            NSLog(@"name: %@, Filename: %@", key, filename);
+            [parameters setObject:filename forKey:key];
+
+        }
+    }
     
     
     return parameters;

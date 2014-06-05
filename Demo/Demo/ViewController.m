@@ -40,7 +40,7 @@
 }
 
 - (IBAction)sendMsg:(id)sender {
-     //create Email Object
+    //create Email Object
     sendgrid *msg = [sendgrid user:@"username" andPass:@"password"];
     
     //set parameters
@@ -51,7 +51,7 @@
     msg.text = @"hello world";
     msg.html = @"<h1>hello world</h1>";
     
-        //**html message to use when setting inline photos as true**
+    //**html message to use when setting inline photos as true**
     //msg.inlinePhoto = true;
     //msg.html = @"<img src =\"cid:image.png\"><h1>hello world</h1>";
     
@@ -66,8 +66,12 @@
     [msg addCustomHeader:replyto withKey:@"category"];
     
     //Image attachment
-    [msg attachImage:self.img];
-    
+    if (self.imgs != NULL) {
+        for (UIImage *img in self.imgs){
+            [msg attachImage:img];
+        }
+    }
+
     //Send email through Web API Transport
     [msg sendWithWeb];
 }
@@ -76,9 +80,10 @@
     
     UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
     NSLog(@"Image Name: %@",info[UIImagePickerControllerMediaURL]);
-    
+    if (self.imgs == NULL)
+        self.imgs = [[NSMutableArray alloc] init];
     [picker dismissViewControllerAnimated:YES completion:NULL];
-    self.img = chosenImage;
+    [self.imgs addObject:chosenImage];
     self.preview.image = chosenImage;
 
     
