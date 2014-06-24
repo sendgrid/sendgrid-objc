@@ -12,9 +12,9 @@
 @property (nonatomic, strong) NSString *apiKey;
 
 
-+ (instancetype)user:(NSString *)apiUser andPass:(NSString *)apiKey;
-- (id)initWithUser:(NSString *)apiUser andPass:(NSString *)apiKey;
++ (instancetype)apiUser:(NSString *)apiUser apiKey:(NSString *)apiKey;
+- (id)initWithApiUser:(NSString *)apiUser apiKey:(NSString *)apiKey;
 - (void)sendWithWeb:(Email *)email;
-- (void)sendWithWebUsingSuccessBlock:(Email *) email successBlock:(void(^)(id responseObject))successBlock failureBlock:(void(^)(NSError *error))failureBlock;
+- (void)sendWithWeb:(Email *)email successBlock:(void(^)(id responseObject))successBlock failureBlock:(void(^)(NSError *error))failureBlock;
 
 @end

@@ -19,7 +19,7 @@
     return self;
 }
 
-- (void) attachImage:(UIImage *)img {
+- (void)attachImage:(UIImage *)img {
     //attaches image to be posted
     if (self.imgs == NULL)
         self.imgs = [[NSMutableArray alloc] init];
