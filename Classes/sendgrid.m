@@ -15,15 +15,18 @@ NSString * const sgEndpoint = @"api/mail.send.json";
 
 @implementation SendGrid
 
-+ (instancetype)apiUser:(NSString *)apiUser apiKey:(NSString *)apiKey {
++ (instancetype)apiUser:(NSString *)apiUser apiKey:(NSString *)apiKey
+{
     SendGrid *message = [[SendGrid alloc] initWithApiUser:apiUser apiKey:apiKey];
     
     return message;
 }
 
-- (id)initWithApiUser:(NSString *)apiUser apiKey:(NSString *)apiKey {
+- (id)initWithApiUser:(NSString *)apiUser apiKey:(NSString *)apiKey
+{
     self = [super init];
-    if (self) {
+    if (self)
+    {
         self.apiUser = apiUser;
         self.apiKey =  apiKey;
     }
@@ -32,31 +35,13 @@ NSString * const sgEndpoint = @"api/mail.send.json";
 
 - (void)sendWithWeb:(Email *)email
 {
-//    [email configureHeader];
-//    
-//    //Posting Paramters to server using AFNetworking 2.0
-//    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-//    
-//    [manager POST:self.baseURL parameters:[email parametersDictionary:self.apiUser apiKey:self.apiKey] constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-//        //if image attachment exists it will post it
-//        for (int i = 0; i < email.imgs.count; i++)
-//        {
-//            UIImage *img = [email.imgs objectAtIndex:i];
-//            NSString *filename = [NSString stringWithFormat:@"image%d.png", i];
-//            NSString *name = [NSString stringWithFormat:@"files[image%d.png]", i];
-//            NSLog(@"name: %@, Filename: %@", name, filename);
-//            NSData *imageData = UIImagePNGRepresentation(img);
-//            [formData appendPartWithFileData:imageData name:name fileName:filename mimeType:@"image/png"];
-//        }
-//    } success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//         NSLog(@"Success: %@", responseObject);
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        NSLog(@"Error: %@", error);
-//    }];
-    
-    [self sendWithWeb:email successBlock:^(id responseObject) {
+    [self sendWithWeb:email
+         successBlock:^(id responseObject)
+    {
         NSLog(@"Success: %@", responseObject);
-    } failureBlock:^(NSError *error) {
+    }
+         failureBlock:^(NSError *error)
+    {
         NSLog(@"Error: %@", error);
     }];
 }
@@ -68,7 +53,8 @@ NSString * const sgEndpoint = @"api/mail.send.json";
     //Posting Paramters to server using AFNetworking 2.0
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
-    [manager POST:self.baseURL parameters:[email parametersDictionary:self.apiUser apiKey:self.apiKey] constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+    [manager POST:self.baseURL parameters:[email parametersDictionary:self.apiUser apiKey:self.apiKey] constructingBodyWithBlock:^(id<AFMultipartFormData> formData)
+    {
         //if image attachment exists it will post it
         for (int i = 0; i < email.imgs.count; i++)
         {
@@ -79,9 +65,13 @@ NSString * const sgEndpoint = @"api/mail.send.json";
             NSData *imageData = UIImagePNGRepresentation(img);
             [formData appendPartWithFileData:imageData name:name fileName:filename mimeType:@"image/png"];
         }
-    } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    }
+          success:^(AFHTTPRequestOperation *operation, id responseObject)
+    {
         successBlock(responseObject);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    }
+          failure:^(AFHTTPRequestOperation *operation, NSError *error)
+    {
         failureBlock(error);
     }];
     
@@ -91,7 +81,8 @@ NSString * const sgEndpoint = @"api/mail.send.json";
 
 - (NSString *)baseURL
 {
-    if (!_baseURL) {
+    if (!_baseURL)
+    {
         self.baseURL = [NSString stringWithFormat: @"%@%@",sgDomain, sgEndpoint];
     }
     
