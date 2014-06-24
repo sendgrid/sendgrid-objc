@@ -1,4 +1,4 @@
-# Sendgrid-ios
+# SendGrid-iOS
 
 This library allows you to quickly and easily send emails through SendGrid using Objective-C.
 
@@ -6,15 +6,16 @@ This library allows you to quickly and easily send emails through SendGrid using
 
 
 ```objective-c
-sendgrid *msg = [sendgrid user:@"username" andPass:@"password"];   
+SendGrid *sendgrid = [SendGrid apiUser:@"username" apiKey:@"password"];   
 
-msg.to = @"foo@bar.com";
-msg.subject = @"subject goes here";
-msg.from = @"me@bar.com";
-msg.text = @"hello world";   
-msg.html = @"<h1>hello world!</h1>";
+Email *email = [[Email alloc] init];
+email.to = @"foo@bar.com";
+email.subject = @"subject goes here";
+email.from = @"me@bar.com";
+email.text = @"hello world";   
+email.html = @"<h1>hello world!</h1>";
     
-[msg sendWithWeb];    
+[sendgrid sendWithWeb:email];    
 ```
 
 ## Installation via CocoaPods (Recommended Method)
@@ -32,29 +33,30 @@ Run the following in the command line
 pod install
 ```
 
-Be sure to open up the xcworkspace file now instead of the xcodeproj file. 
+Be sure to open up the .xcworkspace file now instead of the .xcodeproj file. 
 
 ## Alternative installation
 Install via Source
 
     1. Clone this repository.
-    2. Copy sendgrid.m and .h files to your project.
-    3. Import both sendgrid and AFNetworking in your project
+    2. Copy SendGrid.h and .m, and Email.h and .m files to your project.
+    3. Import both SendGrid and AFNetworking in your project
 
 ## Usage
 
-To begin using this library, create a new email object with your SendGrid credentials.
+To begin using this library, create a new SendGrid object with your SendGrid credentials.
 ```objective-c
-sendgrid *msg = [sendgrid user:@"username" andPass:@"password"];
+SendGrid *sendgrid = [SendGrid apiUser:@"username" apiKey:@"password"];
 ```
 
-Customize the parameters of your email message.
+Create a new Email object, and customize the parameters of your message.
 ```objective-c
-msg.tolist = @[@"foo1@bar.com", @"foo2@bar.com"];
-msg.subject = @"subject goes here";
-msg.from = @"me@bar.com";
-msg.text = @"hello world";   
-msg.html = @"<h1>hello world!</h1>";
+Email *email = [[Email alloc] init];
+email.to = @"foo1@bar.com";
+email.subject = @"subject goes here";
+email.from = @"me@bar.com";
+email.text = @"hello world";   
+email.html = @"<h1>hello world!</h1>";
 ```
 For the full list of available parameters, check out the [Docs](http://sendgrid.com/docs/API_Reference/Web_API/mail.html)
 
@@ -63,7 +65,7 @@ For the full list of available parameters, check out the [Docs](http://sendgrid.
 You can add a single address using the to property of the mail object
 
 ```objective-c
-msg.to = @"foo@bar.com";
+email.to = @"foo@bar.com";
 ```
 
 Or
@@ -71,21 +73,21 @@ Or
 You can add multiple To addresses by setting the toList property
 
 ```objective-c
-msg.tolist = @[@"foo1@bar.com", @"foo2@bar.com"];
+email.tolist = @[@"foo1@bar.com", @"foo2@bar.com"];
 ```
-**Note** One or the other must be set.
+**Note:** One or the other must be set.
 
 ### Adding an image attachment
 You can add an image attachment to your email message. The method accepts a UIImage. 
 
 ```objective-c
-[msg attachImage:self.photo];
+[email attachImage:self.photo];
 ```
 
 **Displaying attached image inline**
 ```objective-c
-msg.inlinePhoto = true;
-msg.html = @"<img src =\"cid:image.png\"><h1>hello world</h1>";
+email.inlinePhoto = true;
+email.html = @"<img src =\"cid:image0.png\"><h1>hello world</h1>";
 ```
 
 ### Adding custom headers
@@ -95,7 +97,7 @@ You can set custom headers in your email by using the addCustomHeader:withKey me
 **Adding Categories**
 ```objective-c
 NSString *cat = @"billing_notifications";
-[msg addCustomHeader:cat withKey:@"category"];
+[email addCustomHeader:cat withKey:@"category"];
 ```
 
 **Adding Unique Arguments**
@@ -103,7 +105,7 @@ NSString *cat = @"billing_notifications";
 NSDictionary *uarg = @{@"customerAccountNumber":@"55555",
                            @"activationAttempt": @"1"};
 
-[msg addCustomHeader:uarg withKey:@"unique_args"];
+[email addCustomHeader:uarg withKey:@"unique_args"];
 ```
 
 ## Contributing
