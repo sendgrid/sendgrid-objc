@@ -47,15 +47,11 @@ NSString * const sgEndpoint = @"api/mail.send.json";
 }
 
 - (void)sendWithWeb:(Email *)email successBlock:(void(^)(id responseObject))successBlock failureBlock:(void(^)(NSError *error))failureBlock
-{
-    [email configureHeader];
-    
-    //Posting Paramters to server using AFNetworking 2.0
+{    
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
     [manager POST:self.baseURL parameters:[email parametersDictionary:self.apiUser apiKey:self.apiKey] constructingBodyWithBlock:^(id<AFMultipartFormData> formData)
     {
-        //if image attachment exists it will post it
         for (int i = 0; i < email.imgs.count; i++)
         {
             UIImage *img = [email.imgs objectAtIndex:i];

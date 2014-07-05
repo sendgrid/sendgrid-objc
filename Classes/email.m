@@ -15,7 +15,6 @@
     self = [super init];
     if (self)
     {
-        self.headers = [NSMutableDictionary new];
         [self setInlinePhoto:false];
     }
     return self;
@@ -63,42 +62,6 @@
     }
     
     return parameters;
-}
-
-#pragma mark - Header Methods
-
-- (void)addCustomHeader:(id)value withKey:(id)key
-{
-    [self.headers setObject:value forKey:key];
-}
-
-- (void)configureHeader
-{
-    //Items to add to Header and convert to json
-    if (self.toList != nil)
-    {
-        [self.headers setObject:self.toList forKey:@"to"];
-        self.to = [self.toList objectAtIndex:0];
-    }
-    
-    
-    if (self.headers != nil)
-        self.xsmtpapi = [self headerEncode:self.headers];
-}
-
-- (NSString *)headerEncode:(NSMutableDictionary *)header
-{
-    //Converts NSDictionary of Header arguments to JSON string
-    NSError *error;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:header
-                                                       options:0
-                                                         error:&error];
-    NSString *JSONString = [[NSString alloc] initWithBytes:[jsonData bytes] length:[jsonData length] encoding:NSUTF8StringEncoding];
-    
-    if (!jsonData)
-        NSLog(@"JSON error: %@", error);
-    
-    return JSONString;
 }
 
 @end

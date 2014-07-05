@@ -25,12 +25,8 @@
 @property (nonatomic, strong) NSString *date;
 @property (nonatomic, strong) NSString *content;
 @property (nonatomic, assign) BOOL inlinePhoto;
-@property (nonatomic, strong) NSMutableDictionary *headers;
 
 - (void)attachImage:(UIImage *)img;
-- (NSString *)headerEncode:(NSDictionary *)header;
-- (void)addCustomHeader:(id)value withKey:(id)key;
-- (void)configureHeader;
 - (NSDictionary *)parametersDictionary:(NSString *)apiUser apiKey:(NSString *)apiKey;
 
 @end
