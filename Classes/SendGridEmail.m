@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 heitortsergent. All rights reserved.
 //
 
-#import "Email.h"
+#import "SendGridEmail.h"
 
-@implementation Email
+@implementation SendGridEmail
 
 - (id)init
 {

@@ -1,5 +1,5 @@
 //
-//  email.h
+//  SendGridEmail.h
 //  sendgrid-ios-demo
 //
 //  Created by Heitor Sergent on 6/23/14.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Email : NSObject
+@interface SendGridEmail : NSObject
 
 @property (nonatomic, strong) NSString *subject;
 @property (nonatomic, strong) NSString *from;

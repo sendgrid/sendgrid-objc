@@ -33,7 +33,7 @@ NSString * const sgEndpoint = @"api/mail.send.json";
     return self;
 }
 
-- (void)sendWithWeb:(Email *)email
+- (void)sendWithWeb:(SendGridEmail *)email
 {
     [self sendWithWeb:email
          successBlock:^(id responseObject)
@@ -46,8 +46,8 @@ NSString * const sgEndpoint = @"api/mail.send.json";
     }];
 }
 
-- (void)sendWithWeb:(Email *)email successBlock:(void(^)(id responseObject))successBlock failureBlock:(void(^)(NSError *error))failureBlock
-{    
+- (void)sendWithWeb:(SendGridEmail *)email successBlock:(void(^)(id responseObject))successBlock failureBlock:(void(^)(NSError *error))failureBlock
+{
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
     [manager POST:self.baseURL parameters:[email parametersDictionary:self.apiUser apiKey:self.apiKey] constructingBodyWithBlock:^(id<AFMultipartFormData> formData)
