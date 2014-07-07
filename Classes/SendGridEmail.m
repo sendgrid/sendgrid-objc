@@ -1,5 +1,5 @@
 //
-//  email.m
+//  SendGridEmail.m
 //  sendgrid-ios-demo
 //
 //  Created by Heitor Sergent on 6/23/14.
@@ -15,8 +15,50 @@
     self = [super init];
     if (self)
     {
+        self.smtpapi = [[SMTPAPI alloc] init];
+        self.bcc = [[NSMutableArray alloc] init];
         [self setInlinePhoto:false];
     }
+    return self;
+}
+
+- (SendGridEmail *)addTo:(NSString *)to {
+    [self.smtpapi addTo:to];
+    return self;
+}
+
+- (SendGridEmail *)addBcc:(NSString *)bcc {
+    [self.bcc addObject:bcc];
+    return self;
+}
+
+- (SendGridEmail *)addSubstitution:(NSString *)key val:(NSString *)val {
+    [self.smtpapi addSubstitution:key val:val];
+    return self;
+}
+
+- (SendGridEmail *)addUniqueArg:(NSString *)key val:(NSString *)val {
+    [self.smtpapi addUniqueArg:key val:val];
+    return self;
+}
+
+- (SendGridEmail *)addCategory:(NSString *)category {
+    [self.smtpapi addCategory:category];
+    return self;
+}
+
+- (SendGridEmail *)addSection:(NSString *)key val:(NSString *)val {
+    [self.smtpapi addSection:key val:val];
+    return self;
+}
+
+- (SendGridEmail *)addFilter:(NSString *)filterName parameterName:(NSString *)parameterName parameterValue:(NSString *)parameterValue {
+    [self.smtpapi addFilter:filterName setting:parameterName val:parameterValue];
+    return self;
+}
+
+- (SendGridEmail *)addFilter:(NSString *)filterName parameterName:(NSString *)parameterName parameterIntValue:(int)parameterIntValue {
+    [self.smtpapi addFilter:filterName settings:parameterName val:parameterIntValue];
     return self;
 }
 
@@ -29,8 +71,11 @@
 
 - (NSDictionary *)parametersDictionary:(NSString *)apiUser apiKey:(NSString *)apiKey
 {
-    NSMutableDictionary *parameters =[NSMutableDictionary dictionaryWithDictionary:@{@"api_user": apiUser, @"api_key": apiKey, @"subject":self.subject, @"from":self.from, @"html":self.html,@"to":self.to, @"text":self.text, @"x-smtpapi":self.xsmtpapi}];
+    [self.smtpapi configureHeader];
+    self.xsmtpapi = [self.smtpapi encodedHeader];
+    NSLog(@"%@", self.xsmtpapi);
     
+    NSMutableDictionary *parameters =[NSMutableDictionary dictionaryWithDictionary:@{@"api_user": apiUser, @"api_key": apiKey, @"subject":self.subject, @"from":self.from, @"html":self.html,@"to":self.to, @"text":self.text, @"x-smtpapi":self.xsmtpapi}];
     
     //optional parameters
     if (self.bcc != nil)
