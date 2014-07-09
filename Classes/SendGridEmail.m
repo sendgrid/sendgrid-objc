@@ -27,6 +27,11 @@
     return self;
 }
 
+- (SendGridEmail *)setTos:(NSMutableArray *)tos {
+    [self.smtpapi setTos:tos];
+    return self;
+}
+
 - (SendGridEmail *)addBcc:(NSString *)bcc {
     [self.bcc addObject:bcc];
     return self;

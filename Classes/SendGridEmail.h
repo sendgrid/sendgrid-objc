@@ -28,6 +28,7 @@
 @property (nonatomic, strong) SMTPAPI *smtpapi;
 
 - (SendGridEmail *)addTo:(NSString *)to;
+- (SendGridEmail *)setTos:(NSMutableArray *)tos;
 - (SendGridEmail *)addBcc:(NSString *)bcc;
 - (SendGridEmail *)addSubstitution:(NSString *)key val:(NSString *)val;
 - (SendGridEmail *)addUniqueArg:(NSString *)key val:(NSString *)val;
