@@ -1,194 +1,84 @@
 //
-//  sendgrid.m
+//  SendGrid.m
 //
 
-#import "sendgrid.h"
-#import "AFNetworking.h"
+#import "SendGrid.h"
 
 NSString * const sgDomain = @"https://api.sendgrid.com/";
 NSString * const sgEndpoint = @"api/mail.send.json";
 
-@interface sendgrid ()
+@interface SendGrid ()
 
 @property (strong, nonatomic) NSString *baseURL;
 
 @end
 
-@implementation sendgrid
+@implementation SendGrid
 
-+ (instancetype)user:(NSString *)apiUser andPass:(NSString *)apiKey{
-    //public method that creates the mail object and returns that object
-    
-    sendgrid *message = [[sendgrid alloc] initWithUser:apiUser andPass:apiKey];
++ (instancetype)apiUser:(NSString *)apiUser apiKey:(NSString *)apiKey
+{
+    SendGrid *message = [[SendGrid alloc] initWithApiUser:apiUser apiKey:apiKey];
     
     return message;
 }
 
-
--(id)initWithUser:(NSString *)apiUser andPass:(NSString *)apiKey{
-    //private method that creates the mail object
+- (id)initWithApiUser:(NSString *)apiUser apiKey:(NSString *)apiKey
+{
     self = [super init];
-    if (self) {
+    if (self)
+    {
         self.apiUser = apiUser;
         self.apiKey =  apiKey;
-        self.headers = [NSMutableDictionary new];
-        [self setInlinePhoto:false];
     }
     return self;
 }
 
-- (void) attachImage:(UIImage *)img {
-    //attaches image to be posted
-    if (self.imgs == NULL)
-        self.imgs = [[NSMutableArray alloc] init];
-    [self.imgs addObject:img];
-}
-
-
-- (NSString *)headerEncode:(NSMutableDictionary *)header{
-    //Converts NSDictionary of Header arguments to JSON string
-    
-    NSError *error;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:header
-                                                       options:0
-                                                         error:&error];
-    NSString *JSONString = [[NSString alloc] initWithBytes:[jsonData bytes] length:[jsonData length] encoding:NSUTF8StringEncoding];
-    
-    if (!jsonData)
-        NSLog(@"JSON error: %@", error);
-    
-    
-    return JSONString;
-    
-}
-
-- (void)addCustomHeader:(id)value withKey:(id)key{
-    //Adds custom header arguments to header dictionary
-    
-    [self.headers setObject:value forKey:key];
-}
-
-- (void)sendWithWeb
+- (void)sendWithWeb:(SendGridEmail *)email
 {
-    
-    //Uses Web Api to send email
-    [self configureHeader];
-    
-    //Posting Paramters to server using AFNetworking 2.0
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    
-    [manager POST:self.baseURL parameters:[self parametersDictionary] constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-        //if image attachment exists it will post it
-        for (int i = 0; i < self.imgs.count; i++)
-        {
-            UIImage *img = [self.imgs objectAtIndex:i];
-            NSString *filename = [NSString stringWithFormat:@"image%d.png", i];
-            NSString *name = [NSString stringWithFormat:@"files[image%d.png]", i];
-            NSLog(@"name: %@, Filename: %@", name, filename);
-            NSData *imageData = UIImagePNGRepresentation(img);
-            [formData appendPartWithFileData:imageData name:name fileName:filename mimeType:@"image/png"];
-        }
-    } success:^(AFHTTPRequestOperation *operation, id responseObject) {
-         NSLog(@"Success: %@", responseObject);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    [self sendWithWeb:email
+         successBlock:^(id responseObject)
+    {
+        NSLog(@"Success: %@", responseObject);
+    }
+         failureBlock:^(NSError *error)
+    {
         NSLog(@"Error: %@", error);
     }];
-    
 }
 
-- (void)sendWithWebUsingSuccessBlock:(void(^)(id responseObject))successBlock failureBlock:(void(^)(NSError *error))failureBlock
+- (void)sendWithWeb:(SendGridEmail *)email successBlock:(void(^)(id responseObject))successBlock failureBlock:(void(^)(NSError *error))failureBlock
 {
-    [self configureHeader];
-    
-    //Posting Paramters to server using AFNetworking 2.0
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
-    [manager POST:self.baseURL parameters:[self parametersDictionary] constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-        //if image attachment exists it will post it
-        for (int i = 0; i < self.imgs.count; i++)
+    [manager POST:self.baseURL parameters:[email parametersDictionary:self.apiUser apiKey:self.apiKey] constructingBodyWithBlock:^(id<AFMultipartFormData> formData)
+    {
+        for (int i = 0; i < email.imgs.count; i++)
         {
-            UIImage *img = [self.imgs objectAtIndex:i];
+            UIImage *img = [email.imgs objectAtIndex:i];
             NSString *filename = [NSString stringWithFormat:@"image%d.png", i];
             NSString *name = [NSString stringWithFormat:@"files[image%d.png]", i];
             NSLog(@"name: %@, Filename: %@", name, filename);
             NSData *imageData = UIImagePNGRepresentation(img);
             [formData appendPartWithFileData:imageData name:name fileName:filename mimeType:@"image/png"];
         }
-    } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    }
+          success:^(AFHTTPRequestOperation *operation, id responseObject)
+    {
         successBlock(responseObject);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    }
+          failure:^(AFHTTPRequestOperation *operation, NSError *error)
+    {
         failureBlock(error);
     }];
     
-}
-
-#pragma mark - Private Methods
-
-- (void)configureHeader
-{
-    //Items to add to Header and convert to json
-    if(self.tolist !=nil){
-        [self.headers setObject:self.tolist forKey:@"to"];
-        self.to=[self.tolist objectAtIndex:0];
-    }
-    
-    
-    if(self.headers !=nil)
-        self.xsmtpapi = [self headerEncode:self.headers];
-}
-
-- (NSDictionary *)parametersDictionary
-{
-    //Building up Parameter Dictionary
-    NSMutableDictionary *parameters =[NSMutableDictionary dictionaryWithDictionary:@{@"api_user": self.apiUser,
-                                                                                     @"api_key": self.apiKey, //required
-                                                                                     @"subject":self.subject, //required
-                                                                                     @"from":self.from,       //required
-                                                                                     @"html":self.html,       //required
-                                                                                     @"to":self.to,           //required
-                                                                                     @"text":self.text,       //required
-                                                                                     @"x-smtpapi":self.xsmtpapi
-                                                                                     }];
-    
-    
-    //optional parameters
-    if(self.bcc != nil)
-        [parameters setObject:self.bcc forKey:@"bcc"];
-    
-    if(self.toName != nil)
-        [parameters setObject:self.toName forKey:@"toname"];
-    
-    if(self.fromName != nil)
-        [parameters setObject:self.fromName forKey:@"fromname"];
-    
-    if(self.replyto != nil)
-        [parameters setObject:self.replyto forKey:@"replyto"];
-    
-    if(self.date != nil)
-        [parameters setObject:self.date forKey:@"date"];
-    
-    if(self.inlinePhoto)
-    {
-        for (int i = 0; i < self.imgs.count; i++)
-        {
-
-            NSString *filename = [NSString stringWithFormat:@"image%d.png", i];
-            NSString *key = [NSString stringWithFormat:@"content[image%d.png]", i];
-            NSLog(@"name: %@, Filename: %@", key, filename);
-            [parameters setObject:filename forKey:key];
-
-        }
-    }
-    
-    
-    return parameters;
 }
 
 #pragma mark - Setter / Getter Overrides
 
 - (NSString *)baseURL
 {
-    if (!_baseURL) {
+    if (!_baseURL)
+    {
         self.baseURL = [NSString stringWithFormat: @"%@%@",sgDomain, sgEndpoint];
     }
     
