@@ -137,7 +137,7 @@ email.html = @"<img src =\"cid:image0.png\"><h1>hello world</h1>";
 
 ## [X-SMTPAPI](http://sendgrid.com/docs/API_Reference/SMTP_API/index.html)
 
-This library uses the SMTPAPI object which is found in [STMAPI-iOS](https://github.com/heitortsergent/smtpapi-ios).
+This library uses the SMTPAPI object which is found in [SMTPAPI-iOS](https://github.com/heitortsergent/smtpapi-ios).
 
 ### [Substitutions](http://sendgrid.com/docs/API_Reference/SMTP_API/substitution_tags.html)
 
