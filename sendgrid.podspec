@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "sendgrid"
-  s.version          = "0.2.0"
+  s.version          = "0.2.1"
   s.summary          = "Send emails using SendGrid"
   s.description      = <<-DESC
                        This library allows you to quickly and easily send emails through SendGrid using Objective-C.
