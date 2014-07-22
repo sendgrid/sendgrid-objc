@@ -80,6 +80,11 @@
     self.xsmtpapi = [self.smtpapi encodedHeader];
     NSLog(@"%@", self.xsmtpapi);
     
+    if (self.html != nil && self.text == nil)
+        self.text = self.html;
+    if (self.html == nil && self.text != nil)
+        self.html = self.text;
+    
     NSMutableDictionary *parameters =[NSMutableDictionary dictionaryWithDictionary:@{@"api_user": apiUser, @"api_key": apiKey, @"subject":self.subject, @"from":self.from, @"html":self.html,@"to":self.to, @"text":self.text, @"x-smtpapi":self.xsmtpapi}];
     
     //optional parameters
