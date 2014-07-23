@@ -1,6 +1,4 @@
-##The Sendgrid Objective-C SDK is now being maintained on the SendGrid github (https://github.com/sendgrid/sendgrid-objc)
-
-## Sendgrid-ios
+# SendGrid-iOS
 
 This library allows you to quickly and easily send emails through SendGrid using Objective-C.
 
@@ -8,19 +6,24 @@ This library allows you to quickly and easily send emails through SendGrid using
 
 
 ```objective-c
-sendgrid *msg = [sendgrid user:@"username" andPass:@"password"];   
+SendGrid *sendgrid = [SendGrid apiUser:@"username" apiKey:@"password"];   
 
-msg.to = @"foo@bar.com";
-msg.subject = @"subject goes here";
-msg.from = @"me@bar.com";
-msg.text = @"hello world";   
-msg.html = @"<h1>hello world!</h1>";
-    
-[msg sendWithWeb];    
+SendGridEmail *email = [[SendGridEmail alloc] init];
+email.to = @"example@example.com";
+email.from = @"other@example.com";
+email.subject = @"Hello World";   
+email.html = @"<h1>My first email through SendGrid</h1>";
+email.text = @"My first email through SendGrid";
+
+[sendgrid sendWithWeb:email];
 ```
 
-## Installation via CocoaPods (Recommended Method)
-[CocoaPods](http://cocoapods.org) is a dependency manager for Objective-C, which automates and simplifies the process of using 3rd-party libraries like Sendgrid and its dependencies in your projects. Simply add the lines below to your existing Podfile or make a new 'Podfile' that contain the lines below. 
+## Installation
+
+Choose your installation method - CocoaPods (recommended) or source.
+
+### Installation via CocoaPods (Recommended Method)
+[CocoaPods](http://cocoapods.org) is a dependency manager for Objective-C, which automates and simplifies the process of using 3rd-party libraries like SendGrid and its dependencies in your projects. Simply add the lines below to your existing Podfile or make a new 'Podfile' that contain the lines below. 
 
 #### Podfile
 
@@ -34,78 +37,165 @@ Run the following in the command line
 pod install
 ```
 
-Be sure to open up the xcworkspace file now instead of the xcodeproj file. 
+Be sure to open up the .xcworkspace file now instead of the .xcodeproj file. 
 
-## Alternative installation
+Then import the library - in the file appropriate to your project.
+
+```objective-c
+import <SendGrid/SendGrid.h>
+```
+
+### Alternative installation
 Install via Source
 
     1. Clone this repository.
-    2. Copy sendgrid.m and .h files to your project.
-    3. Import both sendgrid and AFNetworking in your project
+    2. Copy SendGrid.h and .m files to your project.
+    3. Clone the [SMTPAPI repository](https://github.com/heitortsergent/smtpapi-ios).
+    4. Copy SMTPAPI.h and .m files to your project.
+    5. Import SendGrid.h in the file appropriate to your project, and AFNetworking in your project.
 
 ## Usage
 
-To begin using this library, create a new email object with your SendGrid credentials.
-```objective-c
-sendgrid *msg = [sendgrid user:@"username" andPass:@"password"];
-```
-
-Customize the parameters of your email message.
-```objective-c
-msg.tolist = @[@"foo1@bar.com", @"foo2@bar.com"];
-msg.subject = @"subject goes here";
-msg.from = @"me@bar.com";
-msg.text = @"hello world";   
-msg.html = @"<h1>hello world!</h1>";
-```
-For the full list of available parameters, check out the [Docs](http://sendgrid.com/docs/API_Reference/Web_API/mail.html)
-
-### Adding To addresses
-
-You can add a single address using the to property of the mail object
+To begin using this library, create a new SendGrid object with your SendGrid credentials.
 
 ```objective-c
-msg.to = @"foo@bar.com";
+SendGrid *sendgrid = [SendGrid apiUser:@"username" apiKey:@"password"];
 ```
 
-Or
-
-You can add multiple To addresses by setting the toList property
+Create a new SendGridEmail object, and customize the parameters of your message.
 
 ```objective-c
-msg.tolist = @[@"foo1@bar.com", @"foo2@bar.com"];
+SendGridEmail *email = [[SendGridEmail alloc] init];
+email.to = @"example@example.com";
+email.from = @"other@example.com";
+email.subject = @"Hello World";   
+email.html = @"<h1>My first email through SendGrid</h1>";
+email.text = @"My first email through SendGrid";
 ```
-**Note** One or the other must be set.
+
+Send it.
+
+```objective-c
+[sendgrid sendWithWeb:email];
+```
+
+### To
+
+```objective-c
+[email addTo:@"example@example.com"];
+// or
+[email setTos:@[@"other@other.com"]];
+```
+### From
+
+```objective-c
+[email setFrom:@"other@example.com"];
+```
+
+### From Name
+
+```objective-c
+[email setFromName:@"Other Dude"];
+```
+
+### Reply To
+
+```objective-c
+[email setReplyTo:@"no-reply@nowhere.com"];
+```
+
+### Subject
+
+```objective-c
+[email setSubject:@"Hello World"];
+```
+
+### Text
+
+```objective-c
+[email setText:@"This is some text of the email."];
+```
+
+### Html
+
+```objective-c
+[email setHtml:@"<h1>My first email through SendGrid"];
+```
 
 ### Adding an image attachment
 You can add an image attachment to your email message. The method accepts a UIImage. 
 
 ```objective-c
-[msg attachImage:self.photo];
+[email attachImage:self.photo];
 ```
 
 **Displaying attached image inline**
 ```objective-c
-msg.inlinePhoto = true;
-msg.html = @"<img src =\"cid:image.png\"><h1>hello world</h1>";
+email.inlinePhoto = true;
+email.html = @"<img src =\"cid:image0.png\"><h1>hello world</h1>";
 ```
 
-### Adding custom headers
+## [X-SMTPAPI](http://sendgrid.com/docs/API_Reference/SMTP_API/index.html)
 
-You can set custom headers in your email by using the addCustomHeader:withKey method. 
+This library uses the SMTPAPI object which is found in [SMTPAPI-iOS](https://github.com/heitortsergent/smtpapi-ios).
 
-**Adding Categories**
+### [Substitutions](http://sendgrid.com/docs/API_Reference/SMTP_API/substitution_tags.html)
+
 ```objective-c
-NSString *cat = @"billing_notifications";
-[msg addCustomHeader:cat withKey:@"category"];
+[header addSubstitution:@"key" val:@"value"];
+
+NSMutableDictionary *subs = [header getSubstitutions];
 ```
 
-**Adding Unique Arguments**
-```objective-c
-NSDictionary *uarg = @{@"customerAccountNumber":@"55555",
-                           @"activationAttempt": @"1"};
+### [Unique Arguments](http://sendgrid.com/docs/API_Reference/SMTP_API/unique_arguments.html)
 
-[msg addCustomHeader:uarg withKey:@"unique_args"];
+```objective-c
+[header addUniqueArg:@"key" val:@"value"];
+// or
+NSMutableDictionary *uniqueArgs = [[NSMutableDictionary alloc] init];
+[uniqueArgs setObject:@"value" forKey:@"unique"];
+[header setUniqueArgs:uniqueArgs];
+
+NSMutableDictionary *args = [header getUniqueArgs];
+
+### [Categories](http://sendgrid.com/docs/API_Reference/SMTP_API/categories.html)
+
+```objective-c
+[header addCategory:@"category"];
+// or
+[header addCategories:@[@"category1", @"category2"]];
+// or
+[header setCategories:@[@"category1", @"category2"]];
+
+NSMutableArray *cats = [header getCategories];
+```
+
+### [Sections](http://sendgrid.com/docs/API_Reference/SMTP_API/section_tags.html)
+
+```objective-c
+[header addSection:@"key" val:@"section"];
+// or
+NSMutableDictionary *newSec = [[NSMutableDictionary alloc] init];
+[newSec setObject:@"value" forKey:@"-section-"];
+[header setSections:newSec];
+
+NSMutableDictionary *sections = [header getSections];
+```
+
+### [Filters](http://sendgrid.com/docs/API_Reference/SMTP_API/apps.html)
+
+```objective-c
+[header addFilter:@"filter" setting:@"setting" val:@"value"];
+[header addFilter:@"filter" settings:@"setting" val:1];
+
+NSMutableDictionary *filters = [header getFilters];
+```
+
+### Get Headers
+
+```objective-c
+[header configureHeader];
+NSString *headers = header.encodedHeader;
 ```
 
 ## Contributing
@@ -116,3 +206,6 @@ NSDictionary *uarg = @{@"customerAccountNumber":@"55555",
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
 
+## License
+
+Licensed under the MIT License.
