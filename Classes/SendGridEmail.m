@@ -88,7 +88,7 @@
     //must set the "to" parameter even if X-SMTPAPI tos array is set
     if ([self.smtpapi getTos] != nil && [[self.smtpapi getTos] count] > 0 && self.to == nil)
         [self setTo:[[self.smtpapi getTos] objectAtIndex:0]];
-    else
+    else if (self.to == nil)
         [NSException raise:@"Missing to email value" format:@"to is: %@", self.to];
 
     NSMutableDictionary *parameters =[NSMutableDictionary dictionaryWithDictionary:@{@"api_user": apiUser, @"api_key": apiKey, @"subject":self.subject, @"from":self.from, @"html":self.html,@"to":self.to, @"text":self.text, @"x-smtpapi":self.xsmtpapi}];
