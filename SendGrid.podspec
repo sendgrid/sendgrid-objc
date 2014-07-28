@@ -1,5 +1,5 @@
 Pod::Spec.new do |s|
-  s.name             = "sendgrid"
+  s.name             = "SendGrid"
   s.version          = "0.2.3"
   s.summary          = "Send emails using SendGrid"
   s.description      = <<-DESC
