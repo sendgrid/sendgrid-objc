@@ -8,13 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @property (nonatomic, strong) NSMutableArray *imgs;
 @property (weak, nonatomic) IBOutlet UIImageView *preview;
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
 
 - (IBAction)attachPhoto:(id)sender;
-- (IBAction)sendMsg:(id)sender;
+- (IBAction)sendEmail:(id)sender;
 
 @end

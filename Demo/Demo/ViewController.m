@@ -7,8 +7,8 @@
 //
 
 #import "ViewController.h"
-
-#import "sendgrid.h"
+#import <sendgrid/sendgrid.h>
+#import <sendgrid/SendGridEmail.h>
 
 @interface ViewController ()
 
@@ -19,8 +19,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    	// Do any additional setup after loading the view, typically from a nib.
-   
+    // Do any additional setup after loading the view, typically from a nib.
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -29,7 +29,8 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)attachPhoto:(id)sender {
+- (IBAction)attachPhoto:(id)sender
+{
     
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
     picker.delegate = self;
@@ -39,45 +40,46 @@
     [self presentViewController:picker animated:YES completion:NULL];
 }
 
-- (IBAction)sendMsg:(id)sender {
-    //create Email Object
-    sendgrid *msg = [sendgrid user:@"username" andPass:@"password"];
+- (IBAction)sendEmail:(id)sender
+{
+#warning Don't forget to change the apiUser and apiKey values
+    SendGrid *sendgrid = [SendGrid apiUser:@"YOUR_USERNAME" apiKey:@"YOUR_PASSWORD"];
     
-    //set parameters
-    msg.subject = @"testing format";
-    msg.to = @"foo@bar.com";
+    SendGridEmail *email = [[SendGridEmail alloc] init];
+    email.to = @"foo@bar.com";
+    email.from = @"bar@foo.com";
+    email.subject = @"testing format";
+    email.html = @"<h1>hello world</h1>";
+    email.text = @"hello world";
     
-    msg.from = @"bar@foo.com";
-    msg.text = @"hello world";
-    msg.html = @"<h1>hello world</h1>";
+    //Uncomment this part to send an email with an inline image, category,
+    //unique argument and substitution
     
-    //**html message to use when setting inline photos as true**
-    //msg.inlinePhoto = true;
-    //msg.html = @"<img src =\"cid:image0.png\"><h1>hello world</h1><img src =\"cid:image1.png\"><h1>hello world</h1>";
+    /*
+    UIImage *sendgridLogo = [UIImage imageNamed:@"sendgrid_logo.png"];
+    [email attachImage:sendgridLogo];
     
-    //adding unique arguments
-    NSDictionary *uarg = @{@"customerAccountNumber":@"55555",
-                           @"activationAttempt": @"1"};
+    email.inlinePhoto = true;
+    email.html = @"<h1>hello world</h1><img src=\"cid:image0.png\">";
     
-    //adding categories
-    NSString *replyto = @"billing_notifications";
+    [email.smtpapi addSubstitution:@"-name-" val:@"Awesome Person"];
     
-    [msg addCustomHeader:uarg withKey:@"unique_args"];
-    [msg addCustomHeader:replyto withKey:@"category"];
+    [email.smtpapi addUniqueArg:@"uid" val:@"12345"];
+    [email.smtpapi addCategory:@"welcome_email"];
     
     //Image attachment
     if (self.imgs != NULL) {
         for (UIImage *img in self.imgs){
-            [msg attachImage:img];
+            [email attachImage:img];
         }
     }
-
-    //Send email through Web API Transport
-    [msg sendWithWeb];
+    */
+    
+    [sendgrid sendWithWeb:email];
 }
 
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
     UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
     NSLog(@"Image Name: %@",info[UIImagePickerControllerMediaURL]);
     if (self.imgs == NULL)
@@ -85,7 +87,5 @@
     [picker dismissViewControllerAnimated:YES completion:NULL];
     [self.imgs addObject:chosenImage];
     self.preview.image = chosenImage;
-
-    
 }
 @end
