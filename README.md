@@ -71,8 +71,8 @@ open Demo.xcworkspace
 To begin using this library, import the library into your project.
 
 ```objective-c
-#import <sendgrid/sendgrid.h>
-#import <sendgrid/SendGridEmail.h>
+#import <SendGrid/SendGrid.h>
+#import <SendGrid/SendGridEmail.h>
 ```
 
 Create a new SendGrid object with your SendGrid credentials.
