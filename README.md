@@ -32,7 +32,8 @@ platform :ios, '7.0'
 pod 'sendgrid', '~>  0.1.0'
 ```
 
-Run the following in the command line
+Run the following in the command line:
+
 ```
 pod install
 ```
@@ -54,9 +55,27 @@ Install via Source
     4. Copy SMTPAPI.h and .m files to your project.
     5. Import SendGrid.h in the file appropriate to your project, and AFNetworking in your project.
 
+## Demo App
+
+There's a demo app on the [Github repository](https://github.com/sendgrid/sendgrid-objc), inside the folder "Demo". It's a simple application that lets you send an email, with an Image Picker if you want to send a picture attachment with it.
+
+To run the demo, clone the repository (it's not available when you install via CocoaPods), open the terminal and go to the demo folder. Then do:
+
+```
+pod install
+open Demo.xcworkspace
+```
+
 ## Usage
 
-To begin using this library, create a new SendGrid object with your SendGrid credentials.
+To begin using this library, import the library into your project.
+
+```objective-c
+#import <sendgrid/sendgrid.h>
+#import <sendgrid/SendGridEmail.h>
+```
+
+Create a new SendGrid object with your SendGrid credentials.
 
 ```objective-c
 SendGrid *sendgrid = [SendGrid apiUser:@"username" apiKey:@"password"];
