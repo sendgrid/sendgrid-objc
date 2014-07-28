@@ -20,17 +20,17 @@ PODS:
   - AFNetworking/UIKit (2.3.1):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - sendgrid (0.2.3):
+  - SendGrid (0.2.5):
     - AFNetworking (~> 2.0)
     - SMTPAPI
   - SMTPAPI (0.2.0)
 
 DEPENDENCIES:
-  - sendgrid
+  - SendGrid
 
 SPEC CHECKSUMS:
   AFNetworking: 6d7b76aa5d04c8c37daad3eef4b7e3f2a7620da3
-  sendgrid: 474b069d38e6e5c8b82b2ad427b12a6902d88a3f
+  SendGrid: 85ee7ed32cc23d5173e5e5c752140b82728cfc69
   SMTPAPI: 6dd830b6fb939e2cd288e68c455a44613ddbbbb5
 
 COCOAPODS: 0.33.1

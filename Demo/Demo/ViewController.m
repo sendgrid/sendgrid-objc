@@ -7,8 +7,8 @@
 //
 
 #import "ViewController.h"
-#import <sendgrid/sendgrid.h>
-#import <sendgrid/SendGridEmail.h>
+#import <SendGrid/SendGrid.h>
+#import <SendGrid/SendGridEmail.h>
 
 @interface ViewController ()
 
