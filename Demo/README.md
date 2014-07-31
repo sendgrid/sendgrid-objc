@@ -1,7 +1,7 @@
-# Sendgrid-ios Demo App
+# SendGrid-ios Demo App
 
-This application requires xCode 5.0+ and deploys on IOS 7.0+
+This application requires Xcode 5.0+ and deploys on iOS 7.0+
 
 ## Usage
 
-Modify the SendGrid parameters in the sendMsg IBAction function, before sending out an email. 
+Modify the SendGrid parameters in the sendEmail IBAction function, before sending out an email. 
