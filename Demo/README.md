@@ -1,4 +1,4 @@
-# SendGrid-ios Demo App
+# SendGrid-iOS Demo App
 
 This application requires Xcode 5.0+ and deploys on iOS 7.0+
 
