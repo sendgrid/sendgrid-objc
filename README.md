@@ -29,7 +29,7 @@ Choose your installation method - CocoaPods (recommended) or source.
 
 ```ruby
 platform :ios, '7.0'
-pod 'sendgrid', '~>  0.1.0'
+pod 'SendGrid', '~>  0.2.6'
 ```
 
 Run the following in the command line:
