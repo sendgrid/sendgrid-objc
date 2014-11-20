@@ -37,19 +37,32 @@ NSString * const sgEndpoint = @"api/mail.send.json";
 {
     [self sendWithWeb:email
          successBlock:^(id responseObject)
-    {
-        NSLog(@"Success: %@", responseObject);
-    }
+     {
+         NSLog(@"Success: %@", responseObject);
+     }
          failureBlock:^(NSError *error)
-    {
-        NSLog(@"Error: %@", error);
-    }];
+     {
+         NSLog(@"Error: %@", error);
+     }];
+}
+
+- (void)sendAttachmentWithWeb:(SendGridEmail *)email
+{
+    [self sendAttachmentWithWeb:email
+         successBlock:^(id responseObject)
+     {
+         NSLog(@"Success: %@", responseObject);
+     }
+         failureBlock:^(NSError *error)
+     {
+         NSLog(@"Error: %@", error);
+     }];
 }
 
 - (void)sendWithWeb:(SendGridEmail *)email successBlock:(void(^)(id responseObject))successBlock failureBlock:(void(^)(NSError *error))failureBlock
 {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    
+
     [manager POST:self.baseURL parameters:[email parametersDictionary:self.apiUser apiKey:self.apiKey] constructingBodyWithBlock:^(id<AFMultipartFormData> formData)
     {
         for (int i = 0; i < email.imgs.count; i++)
@@ -70,6 +83,33 @@ NSString * const sgEndpoint = @"api/mail.send.json";
     {
         failureBlock(error);
     }];
+
+}
+
+- (void)sendAttachmentWithWeb:(SendGridEmail *)email successBlock:(void(^)(id responseObject))successBlock failureBlock:(void(^)(NSError *error))failureBlock
+{
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    [manager POST:self.baseURL parameters:[email parametersDictionary:self.apiUser apiKey:self.apiKey] constructingBodyWithBlock:^(id<AFMultipartFormData> formData)
+     {
+         for (int i = 0; i < email.attachments.count; i++)
+         {
+             Attachment *attachment = [email.attachments objectAtIndex:i];
+             NSData *attachmentData = attachment.attachmentData;
+             NSString *mimetype = attachment.mimeType;
+             NSString *filename = [NSString stringWithFormat:@"%@%d.%@", attachment.fileName, i, attachment.extension];
+             NSString *name = [NSString stringWithFormat:@"files[%@]", filename];
+             [formData appendPartWithFileData:attachmentData name:name fileName:filename mimeType:mimetype];
+         }
+     }
+          success:^(AFHTTPRequestOperation *operation, id responseObject)
+     {
+         successBlock(responseObject);
+     }
+          failure:^(AFHTTPRequestOperation *operation, NSError *error)
+     {
+         failureBlock(error);
+     }];
     
 }
 
