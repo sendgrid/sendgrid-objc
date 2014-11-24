@@ -75,6 +75,13 @@
     [self.imgs addObject:img];
 }
 
+- (void)attachFile:(Attachment *)attachment
+{
+    if (self.attachments == NULL)
+        self.attachments = [[NSMutableArray alloc] init];
+    [self.attachments addObject:attachment];
+}
+
 - (NSDictionary *)parametersDictionary:(NSString *)apiUser apiKey:(NSString *)apiKey
 {
     [self.smtpapi configureHeader];
@@ -89,7 +96,7 @@
         [self setTo:[[self.smtpapi getTos] objectAtIndex:0]];
     else if (self.to == nil)
         [NSException raise:@"Missing to email value" format:@"to is: %@", self.to];
-
+    
     NSMutableDictionary *parameters =[NSMutableDictionary dictionaryWithDictionary:@{@"api_user": apiUser, @"api_key": apiKey, @"subject":self.subject, @"from":self.from, @"html":self.html,@"to":self.to, @"text":self.text, @"x-smtpapi":self.xsmtpapi}];
     
     //optional parameters
@@ -104,7 +111,7 @@
     
     if (self.replyTo != nil)
         [parameters setObject:self.replyTo forKey:@"replyto"];
-
+    
     if (self.date != nil)
         [parameters setObject:self.date forKey:@"date"];
     

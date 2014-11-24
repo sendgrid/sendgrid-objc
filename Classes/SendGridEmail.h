@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "SMTPAPI.h"
+#import "Attachment.h"
 
 @interface SendGridEmail : NSObject
 
@@ -19,6 +20,7 @@
 @property (nonatomic, strong) NSString *xsmtpapi;
 @property (nonatomic, strong) NSMutableArray *bcc;
 @property (nonatomic, strong) NSMutableArray *imgs;
+@property (nonatomic, strong) NSMutableArray *attachments;
 @property (nonatomic, strong) NSString *toName;
 @property (nonatomic, strong) NSString *fromName;
 @property (nonatomic, strong) NSString *replyTo;
@@ -38,6 +40,7 @@
 - (SendGridEmail *)addFilter:(NSString *)filterName parameterName:(NSString *)parameterName parameterIntValue:(int)parameterIntValue;
 
 - (void)attachImage:(UIImage *)img;
+- (void)attachFile:(Attachment *)attachment;
 - (NSDictionary *)parametersDictionary:(NSString *)apiUser apiKey:(NSString *)apiKey;
 
 @end

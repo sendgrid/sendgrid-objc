@@ -5,6 +5,7 @@
 #import <Foundation/Foundation.h>
 #import "AFNetworking.h"
 #import "SendGridEmail.h"
+#import "Attachment.h"
 
 @interface SendGrid : NSObject
 
@@ -16,5 +17,8 @@
 - (id)initWithApiUser:(NSString *)apiUser apiKey:(NSString *)apiKey;
 - (void)sendWithWeb:(SendGridEmail *)email;
 - (void)sendWithWeb:(SendGridEmail *)email successBlock:(void(^)(id responseObject))successBlock failureBlock:(void(^)(NSError *error))failureBlock;
+- (void)sendAttachmentWithWeb:(SendGridEmail *)email;
+- (void)sendAttachmentWithWeb:(SendGridEmail *)email successBlock:(void(^)(id responseObject))successBlock failureBlock:(void(^)(NSError *error))failureBlock;
+
 
 @end
