@@ -15,6 +15,7 @@
     self = [super init];
     if (self)
     {
+        self.html = @"";
         self.smtpapi = [[SMTPAPI alloc] init];
         self.bcc = [[NSMutableArray alloc] init];
         [self setInlinePhoto:false];
@@ -82,8 +83,6 @@
     
     if (self.html != nil && self.text == nil)
         self.text = self.html;
-    if (self.html == nil && self.text != nil)
-        self.html = self.text;
     
     //must set the "to" parameter even if X-SMTPAPI tos array is set
     if ([self.smtpapi getTos] != nil && [[self.smtpapi getTos] count] > 0 && self.to == nil)
