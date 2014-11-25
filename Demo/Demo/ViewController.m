@@ -74,6 +74,22 @@
         }
     }
     */
+
+    //this is an example of sending an image as a general attachment
+    //you can send other types of files as well
+    /*
+    UIImage *sendgridLogo = [UIImage imageNamed:@"sendgrid_logo.png"];
+
+    SendGridEmailAttachment* someImageAttachment = [[SendGridEmailAttachment alloc] init];
+    someImageAttachment.attachmentData = UIImagePNGRepresentation(sendgridLogo);
+    someImageAttachment.mimeType = @"image/png";
+    someImageAttachment.fileName = @"sendgrid_logo";
+    someImageAttachment.extension = @"png";
+    
+    [email attachFile:someImageAttachment];
+
+    [sendgrid sendAttachmentWithWeb:email];
+    */
     
     [sendgrid sendWithWeb:email];
 }
