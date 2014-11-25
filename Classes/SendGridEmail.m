@@ -75,7 +75,7 @@
     [self.imgs addObject:img];
 }
 
-- (void)attachFile:(Attachment *)attachment
+- (void)attachFile:(SendGridEmailAttachment *)attachment
 {
     if (self.attachments == NULL)
         self.attachments = [[NSMutableArray alloc] init];

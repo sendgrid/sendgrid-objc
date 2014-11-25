@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h> 
 #import "SMTPAPI.h"
-#import "Attachment.h"
+#import "SendGridEmailAttachment.h"
 
 @interface SendGridEmail : NSObject
 
@@ -41,7 +41,7 @@
 - (SendGridEmail *)addFilter:(NSString *)filterName parameterName:(NSString *)parameterName parameterIntValue:(int)parameterIntValue;
 
 - (void)attachImage:(UIImage *)img;
-- (void)attachFile:(Attachment *)attachment;
+- (void)attachFile:(SendGridEmailAttachment *)attachment;
 - (NSDictionary *)parametersDictionary:(NSString *)apiUser apiKey:(NSString *)apiKey;
 
 @end

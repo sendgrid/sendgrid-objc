@@ -5,7 +5,7 @@
 #import <Foundation/Foundation.h>
 #import "AFNetworking.h"
 #import "SendGridEmail.h"
-#import "Attachment.h"
+#import "SendGridEmailAttachment.h"
 
 @interface SendGrid : NSObject
 
