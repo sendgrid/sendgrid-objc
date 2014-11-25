@@ -16,6 +16,7 @@ DerivedData
 .idea/
 *.hmap
 *.xccheckout
+Demo/Podfile.lock
 
 #CocoaPods
 Pods
