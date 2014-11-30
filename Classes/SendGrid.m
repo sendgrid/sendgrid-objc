@@ -97,7 +97,7 @@ NSString * const sgEndpoint = @"api/mail.send.json";
              SendGridEmailAttachment *attachment = [email.attachments objectAtIndex:i];
              NSData *attachmentData = attachment.attachmentData;
              NSString *mimetype = attachment.mimeType;
-             NSString *filename = [NSString stringWithFormat:@"%@.%@", attachment.fileName, attachment.extension];
+             NSString *filename = [NSString stringWithFormat:@"%@.%@", attachment.fileName, attachment.fileExtension];
              NSString *name = [NSString stringWithFormat:@"files[%@]", filename];
              [formData appendPartWithFileData:attachmentData name:name fileName:filename mimeType:mimetype];
          }

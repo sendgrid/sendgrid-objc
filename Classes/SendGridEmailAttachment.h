@@ -13,6 +13,6 @@
 @property (nonatomic, strong) NSData *attachmentData;
 @property (nonatomic, strong) NSString *mimeType;
 @property (nonatomic, strong) NSString *fileName;
-@property (nonatomic, strong) NSString *extension;
+@property (nonatomic, strong) NSString *fileExtension;
 
 @end
