@@ -18,6 +18,7 @@ email.text = @"My first email through SendGrid";
 [sendgrid sendWithWeb:email];
 ```
 
+
 ## Installation
 
 Choose your installation method - CocoaPods (recommended) or source.
@@ -96,6 +97,18 @@ Send it.
 
 ```objective-c
 [sendgrid sendWithWeb:email];
+```
+#### Swift
+```swift
+let sendgrid:SendGrid = SendGrid(apiUser: "username", apiKey: "password")
+let email:SendGridEmail = SendGridEmail()
+email.to = "example@example.com";
+email.from = "other@example.com";
+email.subject = "Hello World";
+email.html = "<h1>My first email through SendGrid</h1>";
+email.text = "My first email through SendGrid";
+            
+sendgrid.sendWithWeb(email)
 ```
 
 ### To
