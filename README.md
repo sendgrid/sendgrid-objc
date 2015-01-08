@@ -98,50 +98,98 @@ Send it.
 [sendgrid sendWithWeb:email];
 ```
 
-### To
+#### addTo
+
+You can add one or multiple TO addresses using `addTo`.
 
 ```objective-c
-[email addTo:@"example@example.com"];
-// or
-[email setTos:@[@"other@other.com"]];
+[email addTo:@"foo@example.com"];
+[email addTo:@"bar@example.com"];
 ```
-### From
+
+#### setTos
+
+```objective-c
+[email setTos:@[@"foo@example.com", @"bar@example.com"]];
+```
+
+#### addBcc
+
+```objective-c
+[email addBcc:@"foo@example.com"];
+```
+
+#### setFrom
 
 ```objective-c
 [email setFrom:@"other@example.com"];
 ```
 
-### From Name
+#### setFromName
 
 ```objective-c
 [email setFromName:@"Other Dude"];
 ```
 
-### Reply To
+#### setReplyTo
 
 ```objective-c
 [email setReplyTo:@"no-reply@nowhere.com"];
 ```
 
-### Subject
+#### setSubject
 
 ```objective-c
 [email setSubject:@"Hello World"];
 ```
 
-### Text
+#### setText
 
 ```objective-c
 [email setText:@"This is some text of the email."];
 ```
 
-### Html
+#### setHtml
 
 ```objective-c
 [email setHtml:@"<h1>My first email through SendGrid"];
 ```
 
+#### addSubstitution
+
+```objective-c
+[email addSubstitution:@"key" val:@"value"];
+```
+
+#### addUniqueArg
+
+```objective-c
+[email addUniqueArg:@"key" val:@"value"];
+```
+
+#### addCategory
+
+```objective-c
+[email addCategory:@"category"];
+```
+
+#### addSection
+
+```objective-c
+[email addSection:@"key" val:@"value"];
+```
+
+#### addFilter
+
+```objective-c
+[email addFilter:@"filter" setting:@"setting" val:@"value"];
+[email addFilter:@"filter" settings:@"setting" val:1];
+```
+
 ### Adding an image attachment
+
+#### attachImage
+
 You can add an image attachment to your email message. The method accepts a UIImage. 
 
 ```objective-c
@@ -154,11 +202,27 @@ email.inlinePhoto = true;
 email.html = @"<img src =\"cid:image0.png\"><h1>hello world</h1>";
 ```
 
+#### attachFile
+
+```objective-c
+UIImage *sendgridLogo = [UIImage imageNamed:@"sendgrid_logo.png"];
+
+SendGridEmailAttachment* someImageAttachment = [[SendGridEmailAttachment alloc] init];
+someImageAttachment.attachmentData = UIImagePNGRepresentation(sendgridLogo);
+someImageAttachment.mimeType = @"image/png";
+someImageAttachment.fileName = @"sendgrid_logo";
+someImageAttachment.extension = @"png";
+
+[email attachFile:someImageAttachment];
+```
+
 ## [X-SMTPAPI](http://sendgrid.com/docs/API_Reference/SMTP_API/index.html)
 
 This library uses the SMTPAPI object which is found in [SMTPAPI-iOS](https://github.com/heitortsergent/smtpapi-ios).
 
 ### [Substitutions](http://sendgrid.com/docs/API_Reference/SMTP_API/substitution_tags.html)
+
+#### addSubstitution
 
 ```objective-c
 [header addSubstitution:@"key" val:@"value"];
@@ -168,22 +232,47 @@ NSMutableDictionary *subs = [header getSubstitutions];
 
 ### [Unique Arguments](http://sendgrid.com/docs/API_Reference/SMTP_API/unique_arguments.html)
 
+#### addUniqueArg
+
 ```objective-c
 [header addUniqueArg:@"key" val:@"value"];
-// or
+[header addUniqueArg:@"key2" val:@"value2"];
+
+NSMutableDictionary *args = [header getUniqueArgs];
+```
+
+#### setUniqueArgs
+
+```objective-c
 NSMutableDictionary *uniqueArgs = [[NSMutableDictionary alloc] init];
 [uniqueArgs setObject:@"value" forKey:@"unique"];
 [header setUniqueArgs:uniqueArgs];
 
 NSMutableDictionary *args = [header getUniqueArgs];
+```
 
 ### [Categories](http://sendgrid.com/docs/API_Reference/SMTP_API/categories.html)
 
+#### addCategory
+
 ```objective-c
-[header addCategory:@"category"];
-// or
+[header addCategory:@"category1"];
+[header addCategory:@"category2"];
+
+NSMutableArray *cats = [header getCategories];
+```
+
+#### addCategories
+
+```objective-c
 [header addCategories:@[@"category1", @"category2"]];
-// or
+
+NSMutableArray *cats = [header getCategories];
+```
+
+#### setCategories
+
+```objective-c
 [header setCategories:@[@"category1", @"category2"]];
 
 NSMutableArray *cats = [header getCategories];
@@ -191,9 +280,17 @@ NSMutableArray *cats = [header getCategories];
 
 ### [Sections](http://sendgrid.com/docs/API_Reference/SMTP_API/section_tags.html)
 
+#### addSection
+
 ```objective-c
 [header addSection:@"key" val:@"section"];
-// or
+
+NSMutableDictionary *sections = [header getSections];
+```
+
+#### setSections
+
+```objective-c
 NSMutableDictionary *newSec = [[NSMutableDictionary alloc] init];
 [newSec setObject:@"value" forKey:@"-section-"];
 [header setSections:newSec];
@@ -202,6 +299,8 @@ NSMutableDictionary *sections = [header getSections];
 ```
 
 ### [Filters](http://sendgrid.com/docs/API_Reference/SMTP_API/apps.html)
+
+#### addFilter
 
 ```objective-c
 [header addFilter:@"filter" setting:@"setting" val:@"value"];
