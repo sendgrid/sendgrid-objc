@@ -1,4 +1,5 @@
-# SendGrid-iOS
+# SendGrid-Objc
+* We will be dropping support for this lib due possible security concerns of applications being decompiled. Please only use in backend code. 
 
 This library allows you to quickly and easily send emails through SendGrid using Objective-C.
 
