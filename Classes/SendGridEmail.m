@@ -68,10 +68,15 @@
     return self;
 }
 
-- (void)attachImage:(UIImage *)img
+#if TARGET_IPHONE_OS
+- (void)attachImage:(UIImage *)img;
+#else
+- (void)attachImage:(NSImage *)img;
+#endif
 {
-    if (self.imgs == NULL)
-        self.imgs = [[NSMutableArray alloc] init];
+    if (self.imgs == NULL) {
+        self.imgs = [NSMutableArray new];
+    }
     [self.imgs addObject:img];
 }
 

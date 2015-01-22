@@ -67,12 +67,23 @@ NSString * const sgEndpoint = @"api/mail.send.json";
     {
         for (int i = 0; i < email.imgs.count; i++)
         {
-            UIImage *img = [email.imgs objectAtIndex:i];
+            #if TARGET_IPHONE_OS
+                UIImage *img = [email.imgs objectAtIndex:i];
+            #else
+                NSImage *img = [email.imgs objectAtIndex:i];
+            #endif
             NSString *filename = [NSString stringWithFormat:@"image%d.png", i];
             NSString *name = [NSString stringWithFormat:@"files[image%d.png]", i];
             NSLog(@"name: %@, Filename: %@", name, filename);
-            NSData *imageData = UIImagePNGRepresentation(img);
-            [formData appendPartWithFileData:imageData name:name fileName:filename mimeType:@"image/png"];
+            #if TARGET_IPHONE_OS
+                NSData *imageData = UIImagePNGRepresentation(img);
+                NSString *mimeType = @"image/png";
+            #else
+                // TODO: Find UIImagePNGRepresentation for NSImage. TIFF probably huge
+                NSData *imageData = [img TIFFRepresentation];
+                NSString *mimeType = @"image/tiff";
+            #endif
+            [formData appendPartWithFileData:imageData name:name fileName:filename mimeType:mimeType];
         }
     }
           success:^(AFHTTPRequestOperation *operation, id responseObject)
