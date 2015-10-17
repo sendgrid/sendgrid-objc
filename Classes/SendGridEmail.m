@@ -87,7 +87,7 @@
     [self.attachments addObject:attachment];
 }
 
-- (NSDictionary *)parametersDictionary:(NSString *)apiUser apiKey:(NSString *)apiKey
+- (NSDictionary *)parametersDictionary:(nonnull NSString *)apiUser apiKey:(nonnull NSString *)apiKey
 {
     [self.smtpapi configureHeader];
     self.xsmtpapi = [self.smtpapi encodedHeader];
