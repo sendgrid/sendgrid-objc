@@ -93,9 +93,8 @@
     self.xsmtpapi = [self.smtpapi encodedHeader];
     NSLog(@"%@", self.xsmtpapi);
     
-    if (self.html != nil && self.text == nil)
-        self.text = self.html;
-    
+    self.text = (self.html != nil && self.text == nil) ? self.html : @"";
+  
     //must set the "to" parameter even if X-SMTPAPI tos array is set
     if ([self.smtpapi getTos] != nil && [[self.smtpapi getTos] count] > 0 && self.to == nil)
         [self setTo:[[self.smtpapi getTos] objectAtIndex:0]];
