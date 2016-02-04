@@ -68,10 +68,15 @@
     return self;
 }
 
-- (void)attachImage:(UIImage *)img
+#if TARGET_IPHONE_OS
+- (void)attachImage:(UIImage *)img;
+#else
+- (void)attachImage:(NSImage *)img;
+#endif
 {
-    if (self.imgs == NULL)
-        self.imgs = [[NSMutableArray alloc] init];
+    if (self.imgs == NULL) {
+        self.imgs = [NSMutableArray new];
+    }
     [self.imgs addObject:img];
 }
 
@@ -82,15 +87,14 @@
     [self.attachments addObject:attachment];
 }
 
-- (NSDictionary *)parametersDictionary:(NSString *)apiUser apiKey:(NSString *)apiKey
+- (NSDictionary *)parametersDictionary:(nonnull NSString *)apiUser apiKey:(nonnull NSString *)apiKey
 {
     [self.smtpapi configureHeader];
     self.xsmtpapi = [self.smtpapi encodedHeader];
     NSLog(@"%@", self.xsmtpapi);
     
-    if (self.html != nil && self.text == nil)
-        self.text = self.html;
-    
+    self.text = (self.html != nil && self.text == nil) ? self.html : @"";
+  
     //must set the "to" parameter even if X-SMTPAPI tos array is set
     if ([self.smtpapi getTos] != nil && [[self.smtpapi getTos] count] > 0 && self.to == nil)
         [self setTo:[[self.smtpapi getTos] objectAtIndex:0]];
